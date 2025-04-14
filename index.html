@@ -3,87 +3,90 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Buddy Chat Assistant</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chatscope/chat-ui-kit-styles/dist/default/styles.min.css" />
+    <title>Buddy Assistant</title>
     <style>
       body {
         margin: 0;
-        font-family: sans-serif;
-        background: #1a1a1a;
-        color: white;
+        font-family: Arial, sans-serif;
+        background: #f3f3f3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100vh;
         overflow: hidden;
       }
-      .container {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-      }
-      .language-toggle {
-        position: absolute;
-        top: 10px;
-        right: 50px;
-        z-index: 9999;
+      .chat-container {
+        margin-top: 30px;
+        width: 360px;
+        height: 500px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
         display: flex;
-        gap: 8px;
+        flex-direction: column;
+        overflow: hidden;
       }
-      .language-toggle img {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-      }
-      .close-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 9999;
-        font-size: 18px;
-        background: #000;
-        color: #fff;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
-        text-align: center;
-        cursor: pointer;
-      }
-      .greeting {
-        position: absolute;
-        top: 50px;
-        left: 20px;
-        z-index: 10;
+      .chat-header {
         background: #2e7d32;
         color: white;
-        padding: 10px 15px;
-        border-radius: 10px;
+        padding: 15px;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .chat-body {
+        flex-grow: 1;
+        padding: 15px;
+        overflow-y: auto;
         font-size: 14px;
       }
-      .iframe-wrapper {
-        width: 100%;
-        height: 100%;
+      .chat-footer {
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        display: flex;
+        gap: 10px;
+      }
+      button.option-button {
+        padding: 8px 12px;
+        background: #2e7d32;
+        color: white;
         border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .message {
+        margin-bottom: 10px;
+      }
+      .message.bot {
+        color: #2e7d32;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="language-toggle">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Flag_of_the_United_States.svg" alt="EN" onclick="setLanguage('en')" />
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" alt="ES" onclick="setLanguage('es')" />
+    <div class="chat-container">
+      <div class="chat-header">Buddy 🤖</div>
+      <div class="chat-body" id="chat-body">
+        <div class="message bot">Hey bud! Can I help you with anything?</div>
       </div>
-      <div class="close-button" onclick="window.parent.postMessage('close-chat', '*')">×</div>
-      <div class="greeting" id="greetingText">Hey bud! Can I help you with anything?</div>
-
-      <iframe
-        id="chatframe"
-        class="iframe-wrapper"
-        src="https://marbellacannabisclub.github.io/mcc-chatbot/"
-      ></iframe>
+      <div class="chat-footer">
+        <button class="option-button" onclick="handleOption('join')">How to Join</button>
+      </div>
     </div>
 
     <script>
-      function setLanguage(lang) {
-        alert("Switching to: " + (lang === 'en' ? 'English' : 'Spanish'));
-        // Add real translation logic if needed later
+      const chatBody = document.getElementById("chat-body");
+
+      function handleOption(option) {
+        let reply = "";
+        if (option === 'join') {
+          reply = "Sure! To join the club, you need to be 18+, a habitual cannabis user, and provide a valid photo ID (ID, passport, or driver's licence). Once we verify your ID, we'll send a secure link to sign the membership form online. After signing, you'll get the password to access the members-only Menu. Ready to join? You can send your ID via WhatsApp, Telegram, or Signal.";
+        }
+        const response = document.createElement("div");
+        response.classList.add("message", "bot");
+        response.innerText = reply;
+        chatBody.appendChild(response);
+        chatBody.scrollTop = chatBody.scrollHeight;
       }
     </script>
   </body>
