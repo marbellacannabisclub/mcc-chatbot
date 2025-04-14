@@ -4,75 +4,101 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buddy Assistant</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chatscope/chat-ui-kit-styles/dist/default/styles.min.css" />
     <style>
+      /* Overall page style */
       body {
         margin: 0;
-        font-family: sans-serif;
-        background: #1a1a1a;
-        color: white;
-        overflow: hidden;
-      }
-      #root {
-        position: relative;
+        font-family: Arial, sans-serif;
+        background: #f3f3f3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 100vh;
         overflow: hidden;
       }
-      .language-toggle {
-        position: absolute;
-        top: 10px;
-        right: 50px;
-        z-index: 9999;
+      /* Chat container (the assistant UI) */
+      .chat-container {
+        width: 360px;
+        height: 500px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         display: flex;
-        gap: 8px;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
       }
-      .language-toggle img {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-      }
-      .close-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 9999;
-        font-size: 18px;
-        background: #000;
-        color: #fff;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
+      /* Optional header; if you want to remove the white header, you may comment out this block */
+      .chat-header {
+        background: #2e7d32;
+        color: white;
+        padding: 10px;
+        font-size: 16px;
         text-align: center;
+      }
+      /* Chat body where messages appear */
+      .chat-body {
+        flex-grow: 1;
+        padding: 15px;
+        background: #f3f3f3;
+        overflow-y: auto;
+        font-size: 14px;
+      }
+      /* Footer with the single action button */
+      .chat-footer {
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+      }
+      .option-button {
+        background: #2e7d32;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        padding: 10px 15px;
+        font-size: 14px;
         cursor: pointer;
+      }
+      /* Message styling */
+      .message {
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+      .message.bot {
+        color: #2e7d32;
+      }
+      .message.user {
+        text-align: right;
+        color: #333;
       }
     </style>
   </head>
   <body>
-    <div id="root">
-      <div class="language-toggle">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Flag_of_the_United_States.svg" alt="EN" onclick="setLanguage('en')" />
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" alt="ES" onclick="setLanguage('es')" />
+    <div class="chat-container">
+      <!-- Optional header; remove if undesired -->
+      <div class="chat-header">Buddy</div>
+      
+      <div class="chat-body" id="chatBody">
+        <div class="message bot">Hey bud! Can I help you with anything?</div>
       </div>
-      <div class="close-button" onclick="window.parent.postMessage('close-chat', '*')">×</div>
-      <iframe
-        id="chatbot"
-        src="https://67fb80a6c1c251b0273d0ec7--splendorous-khapse-1eb83d.netlify.app/?greeting=Hey%20bud!%20Can%20I%20help%20you%20with%20anything?&buttons=How%20to%20join"
-        width="100%"
-        height="100%"
-        style="border: none;"
-      ></iframe>
+      
+      <div class="chat-footer">
+        <button class="option-button" onclick="handleJoin()">How to Join</button>
+      </div>
     </div>
-
+    
     <script>
-      function setLanguage(lang) {
-        alert("Switching to: " + (lang === 'en' ? 'English' : 'Spanish'));
+      const chatBody = document.getElementById("chatBody");
+
+      function handleJoin() {
+        // Clear any previous responses if needed (optional)
+        const joinResponse = "Sure! To join the club, you need to be 18+, a habitual cannabis user, and provide a valid photo ID (such as your ID card, passport, or driver's licence). Once we verify your ID, we'll send you a secure link to sign the membership form online. After you sign, you'll get the password to access the members-only Menu. You can send your ID via WhatsApp, Telegram, or Signal.";
+        const responseDiv = document.createElement("div");
+        responseDiv.classList.add("message", "bot");
+        responseDiv.innerText = joinResponse;
+        chatBody.appendChild(responseDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
       }
-      window.addEventListener("message", (event) => {
-        if (event.data === "close-chat") {
-          document.body.style.display = "none";
-        }
-      });
     </script>
   </body>
 </html>
