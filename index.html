@@ -1,116 +1,91 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MCC AI Chatbot</title>
-  <link rel="icon" type="image/png" href="MCC Logo Web.png"/>
-  <style>
-    body {
-      background-color: #121212;
-      font-family: Arial, sans-serif;
-      color: white;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #2e7d32;
-      padding: 20px;
-      text-align: center;
-    }
-    header img {
-      height: 50px;
-      vertical-align: middle;
-    }
-    main {
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-    .chat-box {
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-    .chat-message {
-      margin-bottom: 15px;
-    }
-    .chat-message.bot {
-      color: #81c784;
-    }
-    .chat-message.user {
-      text-align: right;
-      color: #ffffff;
-    }
-    .button-group {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .button-group button {
-      background-color: #2e7d32;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .language-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background-color: #2e7d32;
-      border-radius: 5px;
-      padding: 5px;
-      display: flex;
-      gap: 5px;
-    }
-    .language-toggle button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <img src="MCC Logo Web.png" alt="MCC Logo" />
-  </header>
-  <div class="language-toggle">
-    <button onclick="setLanguage('en')">🇬🇧</button>
-    <button onclick="setLanguage('es')">🇪🇸</button>
-  </div>
-  <main>
-    <div class="chat-box" id="chatBox">
-      <div class="chat-message bot">👋 Welcome! How can I help you today?</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Buddy Chat</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@chatscope/chat-ui-kit-styles/dist/default/styles.min.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: #1a1a1a;
+        color: white;
+      }
+      #root {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .language-toggle {
+        position: absolute;
+        top: 10px;
+        right: 50px; /* moved left to allow space from X */
+        z-index: 9999;
+        display: flex;
+        gap: 8px;
+      }
+      .language-toggle img {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+      .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 9999;
+        font-size: 18px;
+        background: #000;
+        color: #fff;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="language-toggle">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Flag_of_the_United_States.svg" alt="EN" onclick="setLanguage('en')" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg" alt="ES" onclick="setLanguage('es')" />
+      </div>
+      <div class="close-button" onclick="window.parent.postMessage('close-chat', '*')">×</div>
+      <iframe
+        id="chatbot"
+        src="https://chat.openai.com/g/g-xxxxx"  <!-- Replace with your real assistant URL -->
+        width="100%"
+        height="100%"
+        style="border: none;"
+      ></iframe>
     </div>
-    <div class="button-group">
-      <button onclick="userMessage('How do I join?')">How to Join</button>
-      <button onclick="userMessage('What are the rules?')">Rules</button>
-      <button onclick="sendID()">Send ID</button>
-    </div>
-  </main>
-  <script>
-    function userMessage(message) {
-      const chatBox = document.getElementById('chatBox');
-      chatBox.innerHTML += `<div class='chat-message user'>${message}</div>`;
-      setTimeout(() => {
-        chatBox.innerHTML += `<div class='chat-message bot'>Thanks for your question! I'm still learning, but here's what I know so far...</div>`;
-      }, 1000);
-    }
 
-    function sendID() {
-      window.open("https://wa.me/+34674114748", "_blank");
-    }
+    <script>
+      // Greeting logic
+      const greeting = "Hey bud! Can I help you with anything?";
 
-    function setLanguage(lang) {
-      alert("Language switched to " + (lang === 'en' ? 'English' : 'Spanish') + ". Full translations coming soon!");
-    }
-  </script>
-</body>
+      // Basic simulation of assistant messages (replace with your assistant's system prompt if you're using OpenAI API directly)
+      window.addEventListener('DOMContentLoaded', () => {
+        const botFrame = document.getElementById("chatbot");
+
+        // Optional: if you're using your own chat UI, inject greeting here
+        // e.g., chatbot.sendInitialMessage(greeting)
+      });
+
+      function setLanguage(lang) {
+        alert("Switching to: " + (lang === 'en' ? 'English' : 'Spanish'));
+        // Language switch logic goes here if needed
+      }
+
+      // Allow parent to close chat from iframe
+      window.addEventListener("message", (event) => {
+        if (event.data === "close-chat") {
+          document.body.style.display = "none";
+        }
+      });
+    </script>
+  </body>
 </html>
