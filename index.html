@@ -29,7 +29,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 80px;
+      height: 100px;
       box-sizing: border-box;
     }
 
@@ -94,7 +94,7 @@
     </div>
 
     <div class="chat-footer">
-      <input type="text" id="userInput" placeholder="Type your message..." />
+      <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)" />
       <button onclick="sendMessage()">➤</button>
     </div>
   </div>
@@ -125,6 +125,12 @@
         chatBody.appendChild(response);
         chatBody.scrollTop = chatBody.scrollHeight;
       }, 700);
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
     }
   </script>
 </body>
