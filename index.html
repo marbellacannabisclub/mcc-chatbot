@@ -1,104 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Buddy Assistant</title>
-    <style>
-      /* Overall page style */
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f3f3f3;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        overflow: hidden;
-      }
-      /* Chat container (the assistant UI) */
-      .chat-container {
-        width: 360px;
-        height: 500px;
-        background: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        position: relative;
-      }
-      /* Optional header; if you want to remove the white header, you may comment out this block */
-      .chat-header {
-        background: #2e7d32;
-        color: white;
-        padding: 10px;
-        font-size: 16px;
-        text-align: center;
-      }
-      /* Chat body where messages appear */
-      .chat-body {
-        flex-grow: 1;
-        padding: 15px;
-        background: #f3f3f3;
-        overflow-y: auto;
-        font-size: 14px;
-      }
-      /* Footer with the single action button */
-      .chat-footer {
-        padding: 10px;
-        border-top: 1px solid #ddd;
-        text-align: center;
-      }
-      .option-button {
-        background: #2e7d32;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        padding: 10px 15px;
-        font-size: 14px;
-        cursor: pointer;
-      }
-      /* Message styling */
-      .message {
-        margin-bottom: 12px;
-        line-height: 1.4;
-      }
-      .message.bot {
-        color: #2e7d32;
-      }
-      .message.user {
-        text-align: right;
-        color: #333;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="chat-container">
-      <!-- Optional header; remove if undesired -->
-      <div class="chat-header">Buddy</div>
-      
-      <div class="chat-body" id="chatBody">
-        <div class="message bot">Hey bud! Can I help you with anything?</div>
-      </div>
-      
-      <div class="chat-footer">
-        <button class="option-button" onclick="handleJoin()">How to Join</button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buddy Assistant</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: white;
+    }
+
+    .chat-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      height: 60px;
+      box-sizing: border-box;
+    }
+
+    .chat-header span {
+      margin-left: auto;
+      padding-right: 40px; /* makes space for 'X' in mcc-ai */
+    }
+
+    .chat-body {
+      background-color: #f0f0f0;
+      flex-grow: 1;
+      padding: 12px;
+      overflow-y: auto;
+    }
+
+    .message {
+      background-color: white;
+      color: #2e7d32;
+      padding: 10px 14px;
+      border-radius: 8px;
+      max-width: 80%;
+      margin-bottom: 10px;
+      font-size: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .chat-footer {
+      background-color: #eeeeee;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-footer input {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .chat-footer button {
+      background-color: #2e7d32;
+      border: none;
+      color: white;
+      padding: 10px 12px;
+      border-radius: 50%;
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-wrapper">
+    <div class="chat-header">
+      <span>Buddy</span>
     </div>
-    
-    <script>
+
+    <div class="chat-body" id="chatBody">
+      <div class="message">Hey bud! Can I help you with anything?</div>
+    </div>
+
+    <div class="chat-footer">
+      <input type="text" id="userInput" placeholder="Type your message..." />
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if (!text) return;
+
       const chatBody = document.getElementById("chatBody");
 
-      function handleJoin() {
-        // Clear any previous responses if needed (optional)
-        const joinResponse = "Sure! To join the club, you need to be 18+, a habitual cannabis user, and provide a valid photo ID (such as your ID card, passport, or driver's licence). Once we verify your ID, we'll send you a secure link to sign the membership form online. After you sign, you'll get the password to access the members-only Menu. You can send your ID via WhatsApp, Telegram, or Signal.";
-        const responseDiv = document.createElement("div");
-        responseDiv.classList.add("message", "bot");
-        responseDiv.innerText = joinResponse;
-        chatBody.appendChild(responseDiv);
+      const msg = document.createElement("div");
+      msg.classList.add("message");
+      msg.style.alignSelf = "flex-end";
+      msg.style.backgroundColor = "#DCF8C6";
+      msg.style.color = "#000";
+      msg.textContent = text;
+      chatBody.appendChild(msg);
+
+      input.value = "";
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Simulated bot response
+      setTimeout(() => {
+        const response = document.createElement("div");
+        response.classList.add("message");
+        response.textContent = "Thanks for your message! Buddy will respond shortly.";
+        chatBody.appendChild(response);
         chatBody.scrollTop = chatBody.scrollHeight;
-      }
-    </script>
-  </body>
+      }, 700);
+    }
+  </script>
+</body>
 </html>
