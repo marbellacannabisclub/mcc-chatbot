@@ -1,139 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Buddy Assistant</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: white;
-    }
+<script>
+  const OPENROUTER_API_KEY = "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";
+  const MODEL = "openai/gpt-4-1106-preview";
 
-    .chat-wrapper {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      border-radius: 10px;
-      overflow: hidden;
-    }
+  const chatBody = document.getElementById("chatBody");
+  const input = document.getElementById("userInput");
 
-    .chat-header {
-      background-color: #2e7d32;
-      color: white;
-      padding: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100px;
-      box-sizing: border-box;
-    }
+  const systemPrompt = `You are Buddy, the official AI assistant for Marbella Cannabis Club (MCC). Speak in a friendly, casual tone. Always use natural language — you're here to help and make people feel welcome.
 
-    .chat-body {
-      background-color: #f0f0f0;
-      flex-grow: 1;
-      padding: 12px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+MCC is a legally registered, private non-profit cannabis association located in Andalusia, Spain. You help adult members and candidates understand how it works.
 
-    .message {
-      background-color: white;
-      color: #2e7d32;
-      padding: 10px 14px;
-      border-radius: 8px;
-      max-width: 90%;
-      margin-bottom: 10px;
-      font-size: 14px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
+You speak multiple languages depending on the user's preference.
 
-    .chat-footer {
-      background-color: #eeeeee;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      border-top: 1px solid #ddd;
-    }
+🟢 Key Facts:
+- MCC was established in 2017 and has over 350 registered members.
+- We do not have a physical club house. Our members-only area on the website is a password-protected digital clubhouse.
+- Our tagline is: “Curated Selection, Gold Seal Quality & Home Delivery.”
+- The MCC logo is a gold seal, representing our commitment to premium service and high standards.
+- We no longer use overwhelming menus. Instead, in-house experts hand-select the best products from our trusted suppliers, making the experience simpler and more enjoyable.
 
-    .chat-footer input {
-      flex-grow: 1;
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-      outline: none;
-    }
+🟢 Membership:
+- Open to habitual cannabis users aged 18+.
+- To join, candidates must send a photo ID (passport, national ID, or driver’s license).
+- After verification, they sign a membership form digitally.
+- Membership is free.
+- Members get access to a password-protected menu on the website.
+- Deliveries are made by an officially designated member-driver in a private vehicle.
+- Products are not sold — members make voluntary donations toward the collective purchase of cannabis products for private, personal use.
 
-    .chat-footer button {
-      background-color: #2e7d32;
-      border: none;
-      color: white;
-      padding: 10px 12px;
-      border-radius: 50%;
-      margin-left: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
-  <div class="chat-wrapper">
-    <div class="chat-header">
-      <img src="buddy text.png" alt="Buddy"/>
-    </div>
+🟢 Legal:
+- Marbella Cannabis Club is the brand name of “ASOCIACIÓN CANNABIS CLUB MEDICINAL TERAPEUTICO.”
+- It is an associative, non-profit organization, registered under Spanish and Andalusian law (Article 22 of the Constitution, Organic Law 1/2002, Law 4/2006, and others).
 
-    <div class="chat-body" id="chatBody">
-      <div class="message">Hey bud! Can I help you with anything?</div>
-    </div>
+🟢 Products:
+- Two grades of cannabis flower: 
+  - A grade (premium everyday quality)
+  - A+ grade (top-tier excellence)
+- Two grades of hash: 
+  - Regular Hash
+  - Premium Hash
+- Other typical offerings include:
+  - Vaporizers with pure cannabis oil and natural terpenes
+  - Cannabis-infused edibles
+  - Extracts (e.g. wax, rosin)
+  - Pre-rolled joints
+  - Limited-availability featured products
 
-    <div class="chat-footer">
-      <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" />
-      <button onclick="sendMessage()">➤</button>
-    </div>
-  </div>
+All products are expertly curated by in-house specialists from a wide network of suppliers.
 
-  <script>
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      const text = input.value.trim();
-      if (!text) return;
+🟢 Special Services:
+- **Reconnaissance Service**: Members can request specific products; we will do our best to source them.
+- **Mystery Box**: A surprise package of handpicked, premium cannabis products.
 
-      const chatBody = document.getElementById("chatBody");
+🚫 Don’t:
+- Offer medical advice.
+- Make recommendations about strains, health, or dosages.
+- Mention e-commerce or use terms like “buy” or “sale.” This is not a business.
 
-      const msg = document.createElement("div");
-      msg.classList.add("message");
-      msg.style.alignSelf = "flex-end";
-      msg.style.backgroundColor = "#DCF8C6";
-      msg.style.color = "#000";
-      msg.textContent = text;
-      chatBody.appendChild(msg);
+✅ Do:
+- Use a relaxed, helpful tone.
+- Encourage users to send their ID to join.
+- Offer button guidance when asked how to join.
+- Refer users to our Telegram, Signal, or WhatsApp chats if they need help.
 
-      input.value = "";
+Always stay helpful, friendly, and professional — you’re the face of the club.`;
+
+  const messages = [
+    { role: "system", content: systemPrompt },
+    { role: "assistant", content: "Hey bud! Can I help you with anything?" }
+  ];
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    // Add user's message to UI
+    const userMsg = document.createElement("div");
+    userMsg.classList.add("message");
+    userMsg.style.alignSelf = "flex-end";
+    userMsg.style.backgroundColor = "#DCF8C6";
+    userMsg.style.color = "#000";
+    userMsg.textContent = text;
+    chatBody.appendChild(userMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    messages.push({ role: "user", content: text });
+    input.value = "";
+
+    // Show typing...
+    const loading = document.createElement("div");
+    loading.classList.add("message");
+    loading.textContent = "Buddy is thinking...";
+    chatBody.appendChild(loading);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    // Fetch GPT response
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          messages: messages
+        })
+      });
+
+      const data = await response.json();
+      const reply = data.choices?.[0]?.message?.content || "Sorry bud, something went wrong.";
+
+      messages.push({ role: "assistant", content: reply });
+
+      // Replace loading with real reply
+      loading.remove();
+      const replyMsg = document.createElement("div");
+      replyMsg.classList.add("message");
+      replyMsg.textContent = reply;
+      chatBody.appendChild(replyMsg);
       chatBody.scrollTop = chatBody.scrollHeight;
-
-      setTimeout(() => {
-        const response = document.createElement("div");
-        response.classList.add("message");
-        response.textContent = "Thanks for your message! Buddy will respond shortly.";
-        chatBody.appendChild(response);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }, 700);
+    } catch (err) {
+      loading.remove();
+      const errorMsg = document.createElement("div");
+      errorMsg.classList.add("message");
+      errorMsg.textContent = "Oops! Buddy had a little hiccup. Try again in a bit.";
+      chatBody.appendChild(errorMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
     }
+  }
 
-    function handleKeyPress(event) {
-      if (event.key === "Enter") {
-        sendMessage();
-      }
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      sendMessage();
     }
-    
-    document.getElementById("userInput").addEventListener("keypress", handleKeyPress);
-  </script>
-</body>
-</html>
+  }
+
+  document.getElementById("userInput").addEventListener("keypress", handleKeyPress);
+</script>
