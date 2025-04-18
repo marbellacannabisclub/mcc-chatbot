@@ -1,4 +1,5 @@
 <script>
+document.addEventListener("DOMContentLoaded", function () {
   const OPENROUTER_API_KEY = "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";
   const MODEL = "openai/gpt-4-1106-preview";
 
@@ -73,7 +74,6 @@ Always stay helpful, friendly, and professional — you’re the face of the clu
     const text = input.value.trim();
     if (!text) return;
 
-    // Add user's message to UI
     const userMsg = document.createElement("div");
     userMsg.classList.add("message");
     userMsg.style.alignSelf = "flex-end";
@@ -86,14 +86,12 @@ Always stay helpful, friendly, and professional — you’re the face of the clu
     messages.push({ role: "user", content: text });
     input.value = "";
 
-    // Show typing...
     const loading = document.createElement("div");
     loading.classList.add("message");
     loading.textContent = "Buddy is thinking...";
     chatBody.appendChild(loading);
     chatBody.scrollTop = chatBody.scrollHeight;
 
-    // Fetch GPT response
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -112,7 +110,6 @@ Always stay helpful, friendly, and professional — you’re the face of the clu
 
       messages.push({ role: "assistant", content: reply });
 
-      // Replace loading with real reply
       loading.remove();
       const replyMsg = document.createElement("div");
       replyMsg.classList.add("message");
@@ -135,5 +132,6 @@ Always stay helpful, friendly, and professional — you’re the face of the clu
     }
   }
 
-  document.getElementById("userInput").addEventListener("keypress", handleKeyPress);
+  input.addEventListener("keypress", handleKeyPress);
+});
 </script>
