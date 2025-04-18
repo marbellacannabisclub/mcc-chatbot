@@ -132,6 +132,8 @@ Always stay helpful, friendly, and professional — you’re the face of the clu
     }
   }
 
-  input.addEventListener("keypress", handleKeyPress);
+  if (input) {
+    input.addEventListener("keypress", handleKeyPress);
+  }
 });
 </script>
