@@ -1,9 +1,25 @@
+import { readFileSync } from "fs";
+import path from "path";
+
 export const config = { runtime: "edge" };
 
 export default async (req, context) => {
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
+  // Read Buddy's system prompt from buddy-prompt.txt
+  const promptPath = path.resolve("./netlify/functions/buddy-prompt.txt");
+  const systemPrompt = readFileSync(promptPath, "utf-8");
+
   const body = await req.json();
+
+  // Inject the system prompt into the messages array
+  const fullBody = {
+    ...body,
+    messages: [
+      { role: "system", content: systemPrompt },
+      ...body.messages.filter(msg => msg.role !== "system")
+    ]
+  };
 
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
@@ -11,7 +27,7 @@ export default async (req, context) => {
       "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(fullBody)
   });
 
   const data = await response.json();
