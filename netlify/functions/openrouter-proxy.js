@@ -1,8 +1,6 @@
 import { readFileSync } from "fs";
 import path from "path";
 
-export const config = { runtime: "edge" };
-
 export default async (req, context) => {
   const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
