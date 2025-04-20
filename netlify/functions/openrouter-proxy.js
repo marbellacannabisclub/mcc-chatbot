@@ -1,5 +1,5 @@
 export default async (req, context) => {
-  const OPENROUTER_API_KEY = "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";
+  const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
   const body = await req.json();
 
