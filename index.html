@@ -106,10 +106,12 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const MODEL = "openai/gpt-4.1-mini";
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6R1gTUqy3VaXtTiChFz741Aqe_ozK8-TXz0gJ3natAo7UKvv6NWHNG0hm26A9amLOSQ/exec";
 
       const chatBody = document.getElementById("chatBody");
       const input = document.getElementById("userInput");
 
+      const sessionId = Date.now().toString();
       const messages = [
         { role: "assistant", content: "Hey bud! Can I help you with anything?" }
       ];
@@ -159,6 +161,20 @@
           replyMsg.textContent = reply;
           chatBody.appendChild(replyMsg);
           chatBody.scrollTop = chatBody.scrollHeight;
+
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              timestamp: new Date().toISOString(),
+              userMessage: text,
+              buddyReply: reply,
+              sessionId: sessionId
+            })
+          });
+
         } catch (err) {
           loading.remove();
           const errorMsg = document.createElement("div");
