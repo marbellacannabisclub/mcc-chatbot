@@ -1,6 +1,7 @@
 export default async (req) => {
   const SHEETS_WEBHOOK_URL = process.env.SHEETS_WEBHOOK_URL;
 
+  // Handle preflight request for CORS
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -12,23 +13,38 @@ export default async (req) => {
     });
   }
 
-  const { userMessage, buddyReply, sessionId } = await req.json();
+  try {
+    const { userMessage, buddyReply, sessionId } = await req.json();
 
-  const res = await fetch(SHEETS_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ userMessage, buddyReply, sessionId })
-  });
+    const response = await fetch(SHEETS_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userMessage,
+        buddyReply,
+        sessionId
+      })
+    });
 
-  const result = await res.json();
+    const result = await response.json();
 
-  return new Response(JSON.stringify(result), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    }
-  });
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
+  }
 };
