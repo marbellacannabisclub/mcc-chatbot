@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 
 // Netlify serverless function handler
-export default async (req, res) => {
+export default async (req) => {
   try {
     // Parse the Google service account key from environment variable
     const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
@@ -15,10 +15,13 @@ export default async (req, res) => {
     const sheets = google.sheets({ version: 'v4', auth });
 
     // Extract data from the request body
-    const { userMessage, buddyReply, sessionId } = req.body;
+    const { userMessage, buddyReply, sessionId } = JSON.parse(req.body);
 
     if (!userMessage || !buddyReply || !sessionId) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing required fields' }),
+      };
     }
 
     // Prepare the new row to append
@@ -40,10 +43,16 @@ export default async (req, res) => {
     });
 
     // Return success
-    return res.status(200).json({ message: 'Conversation logged successfully!' });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Conversation logged successfully!' }),
+    };
 
   } catch (error) {
     console.error('Error logging conversation:', error);
-    return res.status(500).json({ error: 'Failed to log conversation' });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Failed to log conversation', details: error.message }),
+    };
   }
 };
