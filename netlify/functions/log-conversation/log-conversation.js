@@ -26,7 +26,7 @@ exports.handler = async (event) => {
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    const sheetId = '1rBhSOcn5dMq9mto8POoWG6LRLZKdn9kY1yzH8KAocD8';
+    const sheetId = '1wdWk_znfVcsQva8fF7tC3jpG9rrrupIG6aNN42uCn6E';
 
     const timestamp = new Date().toISOString();
 
