@@ -14,14 +14,14 @@ export default async (req) => {
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // Extract data from the request body
-    const { userMessage, buddyReply, sessionId } = JSON.parse(req.body);
+    // No need to JSON.parse(req.body)! It's already an object
+    const { userMessage, buddyReply, sessionId } = req.body;
 
     if (!userMessage || !buddyReply || !sessionId) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required fields' }),
-      };
+      return new Response(JSON.stringify({ error: 'Missing required fields' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Prepare the new row to append
@@ -43,16 +43,16 @@ export default async (req) => {
     });
 
     // Return success
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Conversation logged successfully!' }),
-    };
+    return new Response(JSON.stringify({ message: 'Conversation logged successfully!' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
 
   } catch (error) {
     console.error('Error logging conversation:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to log conversation', details: error.message }),
-    };
+    return new Response(JSON.stringify({ error: 'Failed to log conversation', details: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
