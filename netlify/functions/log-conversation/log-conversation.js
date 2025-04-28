@@ -1,12 +1,11 @@
 import { google } from 'googleapis';
 
-// Netlify serverless function handler
 export default async (req) => {
   try {
-    // Parse the Google service account key from environment variable
+    console.log("Received request body:", req.body); // <-- ADD THIS LINE
+
     const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
 
-    // Authenticate using the service account
     const auth = new google.auth.GoogleAuth({
       credentials: serviceAccount,
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
@@ -14,26 +13,26 @@ export default async (req) => {
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // No need to JSON.parse(req.body)! It's already an object
-    const { userMessage, buddyReply, sessionId } = req.body;
+    // No JSON.parse(req.body), just use it
+    const { userMessage, buddyReply, sessionId } = req.body || {};
 
     if (!userMessage || !buddyReply || !sessionId) {
+      console.error("Missing fields:", { userMessage, buddyReply, sessionId }); // <-- ADD THIS LINE
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // Prepare the new row to append
     const timestamp = new Date().toISOString();
     const values = [[timestamp, userMessage, buddyReply, sessionId]];
 
-    // Define the spreadsheet ID and range
-    const spreadsheetId = '1rBhSOcn5dMq9mto8POoWG6LRLZKdn9kY1yzH8KAocD8'; // Your Google Sheet ID
-    const range = 'Buddy Conversations!A:D'; // Adjust if your sheet name changes
+    console.log("Prepared values to append:", values); // <-- ADD THIS LINE
 
-    // Append the data
-    await sheets.spreadsheets.values.append({
+    const spreadsheetId = '1rBhSOcn5dMq9mto8POoWG6LRLZKdn9kY1yzH8KAocD8';
+    const range = 'Buddy Conversations!A:D';
+
+    const response = await sheets.spreadsheets.values.append({
       spreadsheetId,
       range,
       valueInputOption: 'USER_ENTERED',
@@ -42,7 +41,8 @@ export default async (req) => {
       },
     });
 
-    // Return success
+    console.log("Google Sheets API response:", response.data); // <-- ADD THIS LINE
+
     return new Response(JSON.stringify({ message: 'Conversation logged successfully!' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
