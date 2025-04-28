@@ -5,7 +5,7 @@ export default async (req) => {
     // Read and parse the body first
     const rawBody = await req.text();
     const parsedBody = JSON.parse(rawBody);
-
+    
     console.log("Parsed body:", parsedBody); // Debugging
 
     const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
