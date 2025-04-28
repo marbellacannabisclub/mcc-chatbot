@@ -2,7 +2,11 @@ import { google } from 'googleapis';
 
 export default async (req) => {
   try {
-    console.log("Received request body:", req.body); // <-- ADD THIS LINE
+    // Read and parse the body first
+    const rawBody = await req.text();
+    const parsedBody = JSON.parse(rawBody);
+
+    console.log("Parsed body:", parsedBody); // Debugging
 
     const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
 
@@ -13,11 +17,10 @@ export default async (req) => {
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // No JSON.parse(req.body), just use it
-    const { userMessage, buddyReply, sessionId } = req.body || {};
+    const { userMessage, buddyReply, sessionId } = parsedBody || {};
 
     if (!userMessage || !buddyReply || !sessionId) {
-      console.error("Missing fields:", { userMessage, buddyReply, sessionId }); // <-- ADD THIS LINE
+      console.error("Missing fields:", { userMessage, buddyReply, sessionId });
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
@@ -27,7 +30,7 @@ export default async (req) => {
     const timestamp = new Date().toISOString();
     const values = [[timestamp, userMessage, buddyReply, sessionId]];
 
-    console.log("Prepared values to append:", values); // <-- ADD THIS LINE
+    console.log("Prepared values to append:", values);
 
     const spreadsheetId = '1rBhSOcn5dMq9mto8POoWG6LRLZKdn9kY1yzH8KAocD8';
     const range = 'Buddy Conversations!A:D';
@@ -41,7 +44,7 @@ export default async (req) => {
       },
     });
 
-    console.log("Google Sheets API response:", response.data); // <-- ADD THIS LINE
+    console.log("Google Sheets API response:", response.data);
 
     return new Response(JSON.stringify({ message: 'Conversation logged successfully!' }), {
       status: 200,
