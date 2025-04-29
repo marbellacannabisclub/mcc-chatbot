@@ -39,7 +39,7 @@ export default async (req) => {
     console.log("Prepared values to append:", values);
 
     const spreadsheetId = '1wdWk_znfVcsQva8fF7tC3jpG9rrrupIG6aNN42uCn6E';
-    const range = 'Buddy Conversations!A:D';
+    const range = 'BuddyConversations!A:D';
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId,
