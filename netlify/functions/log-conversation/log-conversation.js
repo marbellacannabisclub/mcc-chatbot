@@ -8,7 +8,13 @@ export default async (req) => {
     
     console.log("Parsed body:", parsedBody); // Debugging
 
-    const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+    // Build service account credentials from environment variables
+    const serviceAccount = {
+      type: 'service_account',
+      project_id: process.env.GOOGLE_PROJECT_ID,
+      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    };
 
     const auth = new google.auth.GoogleAuth({
       credentials: serviceAccount,
