@@ -1,2 +1,27 @@
 [functions]
   included_files = ["netlify/functions/buddy-prompt.txt"]
+  node_bundler = "esbuild"
+
+[dev]
+  command = "npm run dev"
+  port = 8888
+  targetPort = 5173
+  publish = "dist"
+  autoLaunch = true
+  framework = "#custom"
+  functions = "netlify/functions"
+  envFiles = [".env"]
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[dev.environment]
+  OPENROUTER_API_KEY = "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"
+  GOOGLE_PROJECT_ID = "buddy-sheets-logger"
+  GOOGLE_CLIENT_EMAIL = "buddy-sheets-access@buddy-sheets-logger.iam.gserviceaccount.com"
+  GOOGLE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCoJWM21rji3WZ9\nB9aS6NHaYeh55nXjB2HHgXtE4En2l+97NEc57/6GS8tGYzc+ds6BkXvXc27yFmCh\nN8G92lLZjjpgyPc7+oBhPkAH/8ZWnhLgG1td17CeLNL7uDc5u4jilnU4VQXptxWN\nSnDkg223AX5+wrZ8gu5UCQkHD9bAKnXK3dyjTw2rharKC2gzpDHZSVTwqSvXmwYC\nPvQsHYF9Tt0Hqmy2aO1iE/PZR3O0VosBR9MBPtwbrBP40ESjqDEPIwOVLi/5GhaK\nMiP6nT3hNnVZs+vaev3vrrP1LcwzVv0hO4v9mALkAY7QmQx3ZUpf9jid5JA7bh90\nDMfA6r5rAgMBAAECggEANIc1huiuaoUC4vVjZZKhGEl04DwMQOfJ9pLvKPWudYBC\neqk6xRFB4L9l2e/dzsA7xANofkab9rnh5wttlXtSXY+OkjTF87FOkNJrG3Seh+mq\n+OLi+J6MmOVk5elHK1x4J10ccoQxLDGbZH/IY8LhMAYh98SpUJ1wicUm0lNy4aYA\nBGY6HbU4qKjVqWPDGu4TF7YGEAw3ME+is/dRErMD0ZzIDp+f0HxTwz8cfn23Duqp\n06iXYMaD8qr18xme2lG3EEYiFfshuDVF4B6JuI+B8zsWBLL/P7CgBszze8+1NsMk\n3bX/60l4YrnBuJsJbqfJIQcJ2Sx6vuWcjIKVBbQzDQKBgQDhNjc64+kzaEt9cJH9\nKFIEFaQXD1biMJf1RxI2F3Y9ncSp64R2g6XgEIUtkSEvH8xr4v8FRiiaWFDz8GWI\n8dqJDj3CjEvty5neYX8DAriMUoo3FcuqpyffVPGtF0NPn7sIJwamsRJ9+Yr/STG6\n2jwnqAOC5x9Caca0T6w3tBxXzQKBgQC/Ige8yc2eUfAxgrHPpHrY/wtLsjcrfhOA\na+yj8nqbYwr2oSNi/NlrJCUWhldznlcCL7QUuuHH/BM50LeVShNpPwgStlrbVahO\nWT9ZrC9pMaFeLzAfNMOj2ppJiOSQ0IyQHa0B14X3mY3uZfPGgT4rhHX9k+45Zspk\njqctrxlHFwKBgEdAHc0V2euXrXpsKOPM49XC+v0Ir1Y0RX8mEw7l8VShG10e0/Oi\nxtHSqC+4YKVGDCh90mzau3HJSyNCBP2Edr0xsjxgoo0DAxUmB0buj3BllLDExoCh\nDa5Mc4FtgLAqOsPjhOkr0EvmrSEDCSaycKGjOCkr8enTCTh2lGezJdxpAoGAflbI\nNopOWDBhTNjPICng6j7sAIU04pLb4S91pIlLchrtzEiHU48/SAsEWPdEJzCq4s8V\ngf5l8AM30iecshnc6ty3QWc4d3MPZXqo3WVrkWU0/UTD0lzWVSDSi3jpXK/9ueVj\nzqvf6eKeZs8NbFFR/wH33D5EYb0IW5/P8eqkEtECgYBgUMVMEaEMx4HV3ryxvLd4\nMr0m2lG8Ragpv14cS148QypO5m/KaBhOo2xQmFvQ3vw4FUjDN0uJrciqrQZspaZ+\nKblDG2z5yOKZ7cFU3jH2Qed4bQovBuOFdoWobFn+wIYqV8mhwhJoPK5LxbTazk1X\nxB0vJye+87W3jKHW5iplKg==\n-----END PRIVATE KEY-----\n"

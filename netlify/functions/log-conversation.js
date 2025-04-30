@@ -1,19 +1,29 @@
-import { google } from 'googleapis';
+const { google } = require('googleapis');
 
-export default async (req) => {
+const handler = async (event, context) => {
   try {
-    // Read and parse the body first
-    const rawBody = await req.text();
-    const parsedBody = JSON.parse(rawBody);
-    
-    console.log("Parsed body:", parsedBody); // Debugging
+    console.log("Log conversation function called");
+    console.log("Event body:", event.body);
+
+    // Read and parse the body
+    const parsedBody = JSON.parse(event.body);
+    console.log("Parsed body:", parsedBody);
+
+    // Check if Google Sheets API credentials are provided
+    if (!process.env.GOOGLE_PROJECT_ID || !process.env.GOOGLE_PRIVATE_KEY || !process.env.GOOGLE_CLIENT_EMAIL) {
+      console.warn("Google Sheets API credentials are not provided. Skipping conversation logging.");
+      return new Response(JSON.stringify({ message: 'Conversation logging skipped (no credentials)' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     // Build service account credentials from environment variables
     const serviceAccount = {
       type: 'service_account',
-      project_id: process.env.GOOGLE_PROJECT_ID,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      project_id: 'buddy-sheets-logger',
+      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: 'buddy-sheets-access@buddy-sheets-logger.iam.gserviceaccount.com',
     };
 
     const auth = new google.auth.GoogleAuth({
@@ -65,3 +75,5 @@ export default async (req) => {
     });
   }
 };
+
+exports.handler = handler; 
