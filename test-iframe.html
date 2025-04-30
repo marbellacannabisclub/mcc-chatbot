@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Iframe Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Buddy Iframe Test Page</h1>
+    <p>This is a test page to verify the iframe implementation.</p>
+
+    <div id="ai-chat-window" style="display: block; position: fixed; bottom: 90px; right: 20px; width: 320px; height: 420px; background: #ffffff; border-radius: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.3); overflow: visible;">
+        <img src="https://assets.zyrosite.com/A1aP6qaPEVU9v15B/buddy-AE0P7eW0GkHwDV1X.PNG" alt="Buddy" style="position: absolute; top: -60px; left: -45px; width: 150px; z-index: 10000; pointer-events: none;">
+        <div id="close-chat" style="position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; background: black; color: white; text-align: center; line-height: 20px; border-radius: 50%; cursor: pointer; font-size: 14px; z-index: 10001;">×</div>
+        <div style="width: 100%; height: 100%; overflow: hidden; border-radius: 20px;">
+            <iframe src="http://localhost:8888" width="100%" height="100%" style="border: none;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Add click handler for the close button
+        document.getElementById('close-chat').addEventListener('click', function() {
+            document.getElementById('ai-chat-window').style.display = 'none';
+        });
+    </script>
+</body>
+</html> 

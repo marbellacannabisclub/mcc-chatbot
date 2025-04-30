@@ -9,8 +9,10 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
+  position: relative;
+  background: white;
 }
 
 .chat-header {
