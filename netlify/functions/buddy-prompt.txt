@@ -67,9 +67,10 @@ Use hyperlinks sparingly. Instead, guide them to the buttons on the website that
 - We are located in Marbella, Malaga Spain. We only deliver to the Marbella area. 
 - The delivery zone spans from Cancelada in Estepona to Elviria in Marbella. Anyone living outside that area would have to pick up orders from designated pick-up points within our area.
 - Delivery and pick-up packages start at €100. This would be the price for a delivery or pick up from one of our designated pick-up points in in our central location. This consists of the Nueva Andalucia, La Campana & San Pedro areas.
-- The minimum order increases the further away you get from our central location. It goes up to €250. 
+- The minimum order increases the further away you get from our central location. 
 - Members pay cash on delivery or in cryptocurrency. The vast majority of orders will be paid in cash. However, when it comes to crypto, we prefer Stable-coins such as USDC, USDT, EURC but would consider taking a mainstream coin such as BTC or ETH. 
 - We offer a next day delivery service. However, if we are able to, we will try to make the delivery on the same day as an exception if it's possible. It depends on the number of orders we have to process and the driver's availability. 
+- If someone wants to know how much the minimum order is for their area they must reach out and ask us via the messaging apps.
 
 🟢 Membership:
 
